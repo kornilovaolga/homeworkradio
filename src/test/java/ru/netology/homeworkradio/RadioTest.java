@@ -1,118 +1,127 @@
 package ru.netology.homeworkradio;
-
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class RadioTest {
+    Radio radio = new Radio();
+
+    /* Установка количества радиостанций */
+
     @Test
-    void setCurrentStationValid() {
-        Radio music = new Radio(5, 9);
-        music.setCurrentStation(6);
-        assertEquals(6, music.getCurrentStation());
+    void shouldSpecifyStationQuantityPositive() {
+        Radio radio = new Radio((short) 120);
+        radio.setStationsQuantity((short) 1);
+        assertEquals(1, radio.getStationsQuantity());
     }
 
     @Test
-    void setCurrentStationInvalidMax() {
-        Radio music = new Radio(9);
-        music.setCurrentStation(10);
-        assertEquals(9, music.getCurrentStation());
-
+    void shouldSpecifyStationQuantityNegative() {
+        Radio radio = new Radio((short) 120);
+        radio.setStationsQuantity((short) 121);
+        assertEquals(120, radio.getStationsQuantity());
     }
 
     @Test
-    void setCurrentStationInvalidMin() {
-        Radio music = new Radio(1, 9);
-        music.setCurrentStation(-5);
-        assertEquals(0, music.getCurrentStation());
+    void shouldSpecifyStationQuantityNegative2() {
+        Radio radio = new Radio((short) 120);
+        radio.setStationsQuantity((short) 0);
+        assertEquals(120, radio.getStationsQuantity());
+    }
 
+    /* Установка номера радиостанции при количестве радиостанций по умолчанию */
 
+    @Test
+    void shouldSpecifyStationWithDefaultQuantityPositive() {
+        radio.setStation(5);
+        assertEquals(5, radio.getStation());
     }
 
     @Test
-    void setCurrentStationIncreaseValid() {
-        Radio music = new Radio(5, 9);
-        music.increaseStation();
-        assertEquals(6, music.getCurrentStation());
-
-
+    void shouldSpecifyStationWithDefaultQuantityNegative() {
+        radio.setStation(11);
+        assertEquals(0, radio.getStation());
     }
 
     @Test
-    void setCurrentStationIncreaseValidMax() {
-        Radio music = new Radio(9, 9);
-        music.increaseStation();
-        assertEquals(0, music.getCurrentStation());
+    void shouldSpecifyStationWithDefaultQuantityNegative2() {
+        radio.setStation(-1);
+        assertEquals(0, radio.getStation());
+    }
 
+    /* Установка номера радиостанции при собственном количестве радиостанций */
+
+    @Test
+    void shouldSpecifyStationWithCustomQuantityPositive() {
+        Radio radio = new Radio((short) 120);
+        radio.setStationsQuantity((short) 60);
+        radio.setStation(30);
+        assertEquals(30, radio.getStation());
     }
 
     @Test
-    void setCurrentStationDecreaseValid() {
-        Radio music = new Radio(5, 9);
-        music.decreaseStation();
-        assertEquals(4, music.getCurrentStation());
-
-
+    void shouldSpecifyStationWithCustomQuantityNegative() {
+        Radio radio = new Radio((short) 120);
+        radio.setStationsQuantity((short) 60);
+        radio.setStation(61);
+        assertEquals(0, radio.getStation());
     }
 
     @Test
-    void setCurrentStationDecreaseValidMin() {
-        Radio music = new Radio(0, 9);
-        music.decreaseStation();
-        assertEquals(9, music.getCurrentStation());
+    void shouldSpecifyStationWithCustomQuantityNegative2() {
+        Radio radio = new Radio((short) 120);
+        radio.setStationsQuantity((short) 60);
+        radio.setStation(-1);
+        assertEquals(0, radio.getStation());
+    }
 
+    /* Переключение радиостанций */
+
+    @Test
+    void shouldSwitchStationUpToRoundDefault() {
+        Radio radio = new Radio("ThroughMax", 9);
+        radio.switchStationUp(); // 9~10
+        radio.switchStationUp(); // 10~0
+        assertEquals(0, radio.getStation());
     }
 
     @Test
-    void setCurrentVolume() {
-        Radio music = new Radio(0, 5, 100);
-        music.setCurrentVolume(6);
-        assertEquals(6, music.getCurrentVolume());
+    void shouldSwitchStationDownToRoundDefault() {
+        Radio radio = new Radio("ThroughMin", 1);
+        radio.switchStationDown(); // 1~0
+        radio.switchStationDown(); // 0~10
+        assertEquals(10, radio.getStation());
+    }
 
+    /* Регулировка громкости */
+
+    @Test
+    void shouldIncreaseVolumeToThreshold() {
+        Radio radio = new Radio(99);
+        radio.increaseVolume(); // 99~100
+        radio.increaseVolume(); // 100~100
+        assertEquals(100, radio.getVolume());
     }
 
     @Test
-    void setCurrentVolumeInvalidMax() {
-        Radio music = new Radio(0, 5, 100);
-        music.setCurrentVolume(101);
-        assertEquals(100, music.getCurrentVolume());
+    void shouldDecreaseVolumeToThreshold() {
+        Radio radio = new Radio(1);
+        radio.decreaseVolume(); // 1~0
+        radio.decreaseVolume(); // 0~0
+        assertEquals(0, radio.getVolume());
+    }
+
+    /* Тесты для полного покрытия */
+
+    @Test
+    void shouldSetVolumeNegative() {
+        Radio radio = new Radio(101);
+        assertEquals(20, radio.getVolume());
     }
 
     @Test
-    void setCurrentVolumeInvalidMin() {
-        Radio music = new Radio(0, 5, 100);
-        music.setCurrentVolume(-5);
-        assertEquals(0, music.getCurrentVolume());
+    void shouldSetVolumeNegative2() {
+        Radio radio = new Radio(-1);
+        assertEquals(20, radio.getVolume());
     }
-
-
-    @Test
-    void setCurrentVolumeIncreaseMax() {
-        Radio music = new Radio(0, 100, 100);
-        music.increaseVolume();
-        assertEquals(100, music.getCurrentVolume());
-    }
-
-    @Test
-    void setCurrentVolumeIncrease() {
-        Radio music = new Radio(0, 5, 100);
-        music.increaseVolume();
-        assertEquals(6, music.getCurrentVolume());
-    }
-
-    @Test
-    void setCurrentVolumeDecrease() {
-        Radio music = new Radio(0, 5, 100);
-        music.decreaseVolume();
-        assertEquals(4, music.getCurrentVolume());
-    }
-
-    @Test
-    void setCurrentVolumeDecreaseMin() {
-        Radio music = new Radio(0, 0, 100);
-        music.decreaseVolume();
-        assertEquals(0, music.getCurrentVolume());
-    }
-
-
 }

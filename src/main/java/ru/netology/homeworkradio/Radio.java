@@ -1,114 +1,111 @@
 package ru.netology.homeworkradio;
+
 public class Radio {
-    private int maxStation = 9;
-    private int minStation = 0;
-    private int currentStation;
-    private int currentVolume;
-    private int minVolume = 0;
-    private int maxVolume = 10;
-    private boolean on;
+    private String radioName = "Конструктор";
+    private int station;
+    private short stationsQuantity = 10;
+    private int volume = 20;
 
+    /* Конструкторы
+     * --------------------------------------------------- */
 
-    public int getMaxStation() {
-        return maxStation;
+    public Radio() {
     }
 
-    public void setMaxStation(int maxStation) {
-        this.maxStation = maxStation;
-    }
-
-    public int getMinStation() {
-        return minStation;
-    }
-
-    public void setMinStation(int minStation) {
-        this.minStation = minStation;
-    }
-
-    public int getCurrentStation() {
-        return currentStation;
-    }
-
-    public void setCurrentStation(int currentStation) {
-        if (currentStation > maxStation) {
-            this.currentStation = maxStation;
+    public Radio(int volume) {
+        if (volume > 100) {
             return;
         }
-        if (currentStation < minStation) {
-            this.currentStation = minStation;
+        if (volume < 0) {
             return;
         }
-        this.currentStation = currentStation;
-
+        this.volume = volume;
     }
 
-    public int getCurrentVolume() {
-        return currentVolume;
+    public Radio(short stationsQuantity) {
+        setStationsQuantity(stationsQuantity);
     }
 
-    public void setCurrentVolume(int currentVolume) {
-        if (currentVolume > maxVolume) {
-            this.currentVolume = maxVolume;
+    public Radio(String radioName, int station) {
+        this.radioName = radioName;
+        setStation(station);
+    }
+
+    /* Установка параметров
+     * --------------------------------------------------- */
+
+    public void setStationsQuantity(short stationsQuantity) {
+        if (stationsQuantity > 120) {
             return;
         }
-        if (currentVolume < minVolume) {
-            this.currentVolume = minVolume;
+        if (stationsQuantity < 1) {
             return;
         }
-        this.currentVolume = currentVolume;
+        this.stationsQuantity = stationsQuantity;
     }
 
-    public int getMinVolume() {
-        return minVolume;
-    }
-
-    public void setMinVolume(int minVolume) {
-        this.minVolume = minVolume;
-    }
-
-    public int getMaxVolume() {
-        return maxVolume;
-    }
-
-    public void setMaxVolume(int maxVolume) {
-        this.maxVolume = maxVolume;
-    }
-
-    public boolean isOn() {
-        return on;
-    }
-
-    public void setOn(boolean on) {
-        this.on = on;
-    }
-
-    public void increaseStation() {
-        if (currentStation == maxStation) {
-            this.currentStation = minStation;
+    public void setStation(int station) {
+        if (station > stationsQuantity) {
             return;
         }
-        currentStation++;
-    }
-
-    public void decreaseStation() {
-        if (currentStation == minStation) {
-            this.currentStation = maxStation;
+        if (station < 0) {
             return;
         }
-        currentStation--;
+        this.station = station;
     }
+
+    public void setVolume(int volume) {
+        this.volume = volume;
+    }
+
+    /* Оперирование станциями
+     * --------------------------------------------------- */
+
+    public void switchStationUp() {
+        if (station == stationsQuantity) {
+            setStation(0);
+            return;
+        }
+        setStation(++station);
+    }
+
+    public void switchStationDown() {
+        if (station == 0) {
+            setStation(stationsQuantity);
+            return;
+        }
+        setStation(--station);
+    }
+
+    /* Регулировка громкости
+     * --------------------------------------------------- */
 
     public void increaseVolume() {
-        if (currentVolume == maxVolume) {
+        if (volume == 100) {
             return;
         }
-        currentVolume++;
+        setVolume(++volume);
     }
 
     public void decreaseVolume() {
-        if (currentVolume == minVolume) {
+        if (volume == 0) {
             return;
         }
-        currentVolume--;
+        setVolume(--volume);
+    }
+
+    /* Getters
+     * --------------------------------------------------- */
+
+    public int getVolume() {
+        return volume;
+    }
+
+    public int getStation() {
+        return station;
+    }
+
+    public short getStationsQuantity() {
+        return stationsQuantity;
     }
 }
